@@ -1,0 +1,19 @@
+---------------------------------
+FAMMS INSTALLATION NOTES
+---------------------------------
+
+Dependencies
+------------
+
+You need swiginac and Symbolic (http://swiginac.berlios.de) in order to use Famms. 
+
+Installing using distutils
+--------------------------
+
+You need to have installed swiginac and Symbolic before installing Famms. Then,
+Famms can be installed by running:
+python setup.py install
+
+Verification
+------------
+Enter the tests/Famms directory and run the all the tests.
