@@ -1,0 +1,6 @@
+------ famms ChangeLog  ------
+
+ - Released 0.2.0 [2005.12.13]
+ - Bug fix in SystemFamms; the spatial symbols in the whole couple list must be
+   set to make use of the high-level mathematical functions
+ - Added modules and some simple tests
