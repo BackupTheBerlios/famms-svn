@@ -18,7 +18,7 @@ class SystemFamms:
     Basically, SystemFamms handles the coupeling of the manufactured
     solutions in multi-physics simulators."""
 
-    def __init__(self, nproblems, max_nsd, same_nsd=True, time=False):
+    def __init__(self, nproblems, max_nsd, same_nsd=True, time=False, simtype="Python"):
         self.nproblems = nproblems
         self.same_nsd= same_nsd
         self.nsd_list = []
@@ -28,6 +28,7 @@ class SystemFamms:
         if time:
             self.t = Symbolic.Symbol('t')
         self.setMaxDimension(max_nsd)
+        self.simtype = simtype
 
     def assignCallbackNames(self, v_names, b_names):
         """If not default function names for inserting the callbacks, set them
@@ -44,6 +45,7 @@ class SystemFamms:
         if not nsds:
             nsds = self.nsd
         self.assignDimensions(nsds)
+        self.assignSpatialSymbols()
         self.prepare()
 
     def assignSimulators(self, sim_list):
@@ -63,6 +65,10 @@ class SystemFamms:
         else:
             self.nsd_list = nsds
 
+    def assignSpatialSymbols(self):
+        for i in xrange(len(self.solutions)):
+            self.solutions[i].setSpatialSymbols(self.x[0:self.nsd_list[i]])
+
     def setMaxDimension(self, nsd):
         self.nsd = nsd
         self.x = []
@@ -76,7 +82,8 @@ class SystemFamms:
         for i in range(self.nproblems):
             f.append(Famms(nsd   = self.nsd_list[i],
                             time = self.t,
-                            space_symbs = self.x[0:self.nsd_list[i]]))
+                            space_symbs = self.x[0:self.nsd_list[i]],
+                            simtype = self.simtype))
             if type(self.v_names)==type([]) and type(self.b_names)==type([]):
                 f[i].setCallBackNames(self.v_names[i], self.b_names[i])
             f[i].assign(solution  = self.solutions[i],

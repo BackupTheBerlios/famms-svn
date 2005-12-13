@@ -181,8 +181,7 @@ class Famms(object):
             exec("simulator.%s(self.v_func)" % self.v_func_name)
             exec("simulator.%s(self.b_func)" % self.b_func_name)
         except:
-            raise FammsError, "Could not attach functors to the simulator using \
-            the method '%s' and '%s'" % (self.v_func_name, self.b_func_name)
+            raise FammsError, "Could not attach functors (type %s) to the simulator using \ the method '%s' and '%s'" % (type(self.v_func_name), self.v_func_name, self.b_func_name)
 
     def getCallbacks(self):
         return (self.v_func, self. b_func)
