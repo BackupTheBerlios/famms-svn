@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
 __author__      = "Ola Skavhaug (skavhaug@simula.no)"
-__date__        = "2003-12-01 -- 2005-11-18"
-__copyright__   = "Copyright (c) 2003, 2004, 2005 Ola Skavhaug"
+__date__        = "2003-12-01 -- 2006-09-14"
+__copyright__   = "Copyright (c) 2003, 2004, 2005, 2006 Ola Skavhaug"
 __license__     = "GNU LGPL Version 2"
 
 """Fully Automated Method of Manufactured Solutions
@@ -92,10 +92,10 @@ class Famms(object):
     """ 
 
     def __init__(self, nsd=2, time=None, space_symbs=None, simtype="Python", **kwargs):
-        """ Instansiate the famms object. Arguments are: 
+        """Constructor. Arguments are: 
         * nsd (int=2) : The number of space dimensions for the PDE
         * time (symbol=None): The symbol for time
-        * space_symbs (symbol=None): List of the symbols involved.
+        * space_symbs (symbol=None): List of existing symbols.
         * simtype (string='DP'): The simulator type """
         if space_symbs:
             self.x = space_symbs
@@ -107,7 +107,7 @@ class Famms(object):
                 symb = "x_%i" % (i,)
                 self.x.append(Symbol(symb))
         self.t = None
-        if isinstance(time, Symbol): 
+        if isinstance(time, Symbol):
             self.t = time
         elif time:
             self.t = Symbol('t')
@@ -190,19 +190,7 @@ class Famms(object):
         """ Convert the Python function objects to a Python callback. If using
         Famms with some exotic C++/Fortran or even Python simulator, extend this
         method fit the framework."""
-        functype = None; funcstype = None
-        """Replace conditional with polymorphism"""
         (functype, funcstype) = self.simtype_obj.getfunctors()
-        """Old construct:
-        if self.simtype == "DP":
-            functype = FieldFuncPython; funcstype = FieldsFuncPython
-        elif self.simtype == "C++":
-            functype = pyevalPt; funcstype = pyevalPt
-        elif self.simtype == "UserDefined":
-            functype = self.userfunc
-        else:
-            raise FammsError, "Python Callback for '%s' not implemented!\n" % (self.simtype, )
-"""
         if kwargs['type_'] == 'scalar':
             func = functype()
         else :
