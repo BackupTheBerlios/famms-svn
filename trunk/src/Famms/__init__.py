@@ -25,7 +25,13 @@ try: from Callback.PyCppFunctor import PyCppFunctor
 except: pass
 
 
-FammsError = "Famms Error"
+class FammsError(BaseException):
+
+    def __init__(self, value):
+        self.value = value
+
+    def __str__(self):
+        return str(self.value)
 
 class PyFunctor(object):
     """Python callback functor. The method 'attach' must be defined and accept
@@ -96,7 +102,7 @@ class Famms(object):
         * nsd (int=2) : The number of space dimensions for the PDE
         * time (symbol=None): The symbol for time
         * space_symbs (symbol=None): List of existing symbols.
-        * simtype (string='DP'): The simulator type """
+        * simtype (string='Python'): The simulator type """
         if space_symbs:
             self.x = space_symbs
             self.n = len(space_symbs)
@@ -201,7 +207,7 @@ class Famms(object):
  
     def _vValue(self, point, time):
         """This is the point eval of the analytical solution. Pass the point to
-        the symbolic.expression v, that returns float
+        the Symbolic.expression v, that returns float
         """
         try:
             retVal = self.v.eval(*(point+(time, )))
